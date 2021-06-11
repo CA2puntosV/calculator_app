@@ -1,8 +1,8 @@
+import 'package:calculator_app/src/bloc/calculator_bloc.dart';
 import 'package:calculator_app/src/widgets/calculator_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../bloc/calculator_bloc.dart';
 
 class CalculatorApp extends StatefulWidget {
   CalculatorApp({Key? key}) : super(key: key);
@@ -12,9 +12,86 @@ class CalculatorApp extends StatefulWidget {
 }
 
 class _CalculatorAppState extends State<CalculatorApp> {
+  int firstNum = 0;
+  int secondNum = 0;
   String history = '';
   String textToDisplay = '';
+  String _res = '';
+  String operation = '';
   CalculatorBloc calculatorBloc = CalculatorBloc();
+
+  void btnOnClick(String btnVal) {
+    print(btnVal);
+    if (btnVal == '+' || btnVal == '-' || btnVal == 'X' || btnVal == '/') {
+      firstNum = int.parse(textToDisplay);
+      _res = '0';
+      operation = btnVal;
+    } else if (btnVal == '=') {
+      secondNum = int.parse(textToDisplay);
+      if (operation == '+') {
+        _res = (firstNum + secondNum).toString();
+        history =
+            firstNum.toString() + operation.toString() + secondNum.toString();
+      }
+      if (operation == '-') {
+        _res = (firstNum - secondNum).toString();
+        history =
+            firstNum.toString() + operation.toString() + secondNum.toString();
+      }
+      if (operation == 'X') {
+        _res = (firstNum * secondNum).toString();
+        history =
+            firstNum.toString() + operation.toString() + secondNum.toString();
+      }
+      if (operation == '/') {
+        _res = (firstNum / secondNum).toString();
+        history =
+            firstNum.toString() + operation.toString() + secondNum.toString();
+      }
+    } else {
+      _res = int.parse(textToDisplay + btnVal).toString();
+    }
+
+    setState(() {
+      textToDisplay = _res;
+    });
+  }
+
+  void allClear(String btnVal) {
+    print('Everything was cleared');
+    firstNum = 0;
+    secondNum = 0;
+    history = '';
+    textToDisplay = '';
+    _res = '';
+    operation = '';
+
+    setState(() {
+      textToDisplay = _res;
+    });
+  }
+
+  void clear(String btnVal) {
+    print('Cleared last operation');
+    firstNum = 0;
+    secondNum = 0;
+    textToDisplay = '';
+    _res = '';
+    operation = '';
+
+    setState(() {
+      textToDisplay = _res;
+    });
+  }
+
+  void eraser(String text) {
+    print('Cleared last number');
+    _res = textToDisplay.substring(0, textToDisplay.length - 1);
+
+    setState(() {
+      textToDisplay = _res;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,36 +103,22 @@ class _CalculatorAppState extends State<CalculatorApp> {
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              calculatorBloc.allClear(
-                history: history,
-                textToDisplay: textToDisplay,
-              );
-            });
-          },
+          callback: allClear,
         ),
         CalculatorButton(
           text: 'C',
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              calculatorBloc.clear(textToDisplay);
-            });
-          },
+          callback: clear,
         ),
         CalculatorButton(
-            text: '<',
-            fillColor: 0xFF69486c,
-            textColor: 0xFF000000,
-            textSize: 22.0,
-            callback: () {
-              setState(() {
-                textToDisplay = calculatorBloc.eraser(textToDisplay);
-              });
-            }),
+          text: '<',
+          fillColor: 0xFF69486c,
+          textColor: 0xFF000000,
+          textSize: 22.0,
+          callback: eraser,
+        ),
         CalculatorButton(
           text: '/',
           fillColor: 0xFF69486c,
@@ -77,45 +140,26 @@ class _CalculatorAppState extends State<CalculatorApp> {
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('9');
-            });
-          },
+          callback: btnOnClick,
         ),
         CalculatorButton(
-          text: '8',
-          fillColor: 0xFFfdff91,
-          textColor: 0xFF000000,
-          textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('8');
-            });
-          },
-        ),
+            text: '8',
+            fillColor: 0xFFfdff91,
+            textColor: 0xFF000000,
+            textSize: 22.0,
+            callback: btnOnClick),
         CalculatorButton(
-          text: '7',
-          fillColor: 0xFFfdff91,
-          textColor: 0xFF000000,
-          textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('7');
-            });
-          },
-        ),
+            text: '7',
+            fillColor: 0xFFfdff91,
+            textColor: 0xFF000000,
+            textSize: 22.0,
+            callback: btnOnClick),
         CalculatorButton(
-          text: 'X',
-          fillColor: 0xFF69486c,
-          textColor: 0xFF000000,
-          textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('X');
-            });
-          },
-        ),
+            text: 'X',
+            fillColor: 0xFF69486c,
+            textColor: 0xFF000000,
+            textSize: 22.0,
+            callback: btnOnClick),
       ],
     );
     final calcItemRowThree = Row(
@@ -126,44 +170,28 @@ class _CalculatorAppState extends State<CalculatorApp> {
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('6');
-            });
-          },
+          callback: btnOnClick,
         ),
         CalculatorButton(
           text: '5',
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('5');
-            });
-          },
+          callback: btnOnClick,
         ),
         CalculatorButton(
           text: '4',
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('4');
-            });
-          },
+          callback: btnOnClick,
         ),
         CalculatorButton(
           text: '-',
           fillColor: 0xFF69486c,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('-');
-            });
-          },
+          callback: btnOnClick,
         ),
       ],
     );
@@ -175,44 +203,28 @@ class _CalculatorAppState extends State<CalculatorApp> {
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('3');
-            });
-          },
+          callback: btnOnClick,
         ),
         CalculatorButton(
           text: '2',
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('2');
-            });
-          },
+          callback: btnOnClick,
         ),
         CalculatorButton(
           text: '1',
           fillColor: 0xFFfdff91,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('1');
-            });
-          },
+          callback: btnOnClick,
         ),
         CalculatorButton(
           text: '+',
           fillColor: 0xFF69486c,
           textColor: 0xFF000000,
           textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('+');
-            });
-          },
+          callback: btnOnClick,
         ),
       ],
     );
