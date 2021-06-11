@@ -38,7 +38,7 @@ class CalculatorButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            callback(text);
+            this.callback(text);
           },
         ),
       ),

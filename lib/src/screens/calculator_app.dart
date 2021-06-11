@@ -63,7 +63,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('/ol');
+              textToDisplay = calculatorBloc.btnOnClick('/');
             });
           },
         ),
@@ -226,7 +226,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('/');
+              textToDisplay = calculatorBloc.btnOnClick('0');
             });
           },
         ),
@@ -237,18 +237,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('/');
-            });
-          },
-        ),
-        CalculatorButton(
-          text: '.',
-          fillColor: 0xFFfdff91,
-          textColor: 0xFF000000,
-          textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('/');
+              textToDisplay = calculatorBloc.btnOnClick('00');
             });
           },
         ),
@@ -259,7 +248,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('/');
+              textToDisplay = calculatorBloc.btnOnClick('=');
             });
           },
         ),
