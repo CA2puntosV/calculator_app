@@ -45,15 +45,18 @@ class CalculatorBloc {
     required String history,
     required String textToDisplay,
   }) {
+    print('Everything was cleared');
     history = '';
     textToDisplay = '';
   }
 
   void clear(String text) {
+    print('Cleared last operation');
     text = '';
   }
 
   String eraser(String text) {
+    print('Cleared last number');
     return text.substring(0, text.length - 1);
   }
 }
