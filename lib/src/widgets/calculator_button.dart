@@ -22,10 +22,12 @@ class CalculatorButton extends StatelessWidget {
       margin: const EdgeInsets.all(5.0),
       child: SizedBox(
         width: 65,
-        height: 65,
+        height: 55,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: Color(fillColor!),
+            shadowColor: Colors.black,
+            elevation: 5,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50.0),
             ),

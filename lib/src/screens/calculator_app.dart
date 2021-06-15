@@ -23,7 +23,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
       children: <Widget>[
         CalculatorButton(
           text: 'AC',
-          fillColor: 0xFFfdff91,
+          fillColor: 0xFFfbb92b,
           textColor: 0xFF000000,
           textSize: 22.0,
           callback: () {
@@ -37,7 +37,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
         ),
         CalculatorButton(
           text: 'C',
-          fillColor: 0xFFfdff91,
+          fillColor: 0xFFfbb92b,
           textColor: 0xFF000000,
           textSize: 22.0,
           callback: () {
@@ -48,8 +48,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
         ),
         CalculatorButton(
             text: '<',
-            fillColor: 0xFF69486c,
-            textColor: 0xFF000000,
+            fillColor: 0xFF8e28dc,
+            textColor: 0xFFfef9ff,
             textSize: 22.0,
             callback: () {
               setState(() {
@@ -58,8 +58,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
             }),
         CalculatorButton(
           text: '/',
-          fillColor: 0xFF69486c,
-          textColor: 0xFF000000,
+          fillColor: 0xFF8e28dc,
+          textColor: 0xFFfef9ff,
           textSize: 22.0,
           callback: () {
             setState(() {
@@ -107,8 +107,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
         ),
         CalculatorButton(
           text: 'X',
-          fillColor: 0xFF69486c,
-          textColor: 0xFF000000,
+          fillColor: 0xFF8e28dc,
+          textColor: 0xFFfef9ff,
           textSize: 22.0,
           callback: () {
             setState(() {
@@ -156,8 +156,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
         ),
         CalculatorButton(
           text: '-',
-          fillColor: 0xFF69486c,
-          textColor: 0xFF000000,
+          fillColor: 0xFF8e28dc,
+          textColor: 0xFFfef9ff,
           textSize: 22.0,
           callback: () {
             setState(() {
@@ -205,8 +205,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
         ),
         CalculatorButton(
           text: '+',
-          fillColor: 0xFF69486c,
-          textColor: 0xFF000000,
+          fillColor: 0xFF8e28dc,
+          textColor: 0xFFfef9ff,
           textSize: 22.0,
           callback: () {
             setState(() {
@@ -241,81 +241,102 @@ class _CalculatorAppState extends State<CalculatorApp> {
             });
           },
         ),
-        CalculatorButton(
-          text: '=',
-          fillColor: 0xFF69486c,
-          textColor: 0xFF000000,
-          textSize: 22.0,
-          callback: () {
-            setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('=');
-            });
-          },
+        SizedBox(
+          width: 65 * 2.5,
+          child: CalculatorButton(
+            text: '=',
+            fillColor: 0xFF9b2bf0,
+            textColor: 0xFFf5e1fd,
+            textSize: 22.0,
+            callback: () {
+              setState(() {
+                textToDisplay = calculatorBloc.btnOnClick('=');
+              });
+            },
+          ),
         ),
       ],
+    );
+
+    final numbersContainer = Container(
+      margin: EdgeInsets.only(
+        left: 15.0,
+        right: 15.0,
+      ),
+      height: 165.0,
+      decoration: BoxDecoration(
+        color: Colors.black38,
+        borderRadius: BorderRadius.all(Radius.circular(32.0)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            child: Padding(
+              padding: EdgeInsets.only(right: 12.0),
+              child: Text(
+                history,
+                style: GoogleFonts.rubik(
+                  textStyle: TextStyle(
+                    fontSize: 24.0,
+                    color: Colors.white54,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 5.0,
+                right: 12.0,
+                bottom: 12.0,
+                left: 12.0,
+              ),
+              child: Text(
+                textToDisplay,
+                style: GoogleFonts.rubik(
+                  textStyle: TextStyle(
+                    fontSize: 48.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.center,
-              colors: [
-                Color(0xFF020927),
-                Color(0xFF4c565e),
-              ],
+        appBar: AppBar(
+          title: Text(
+            'Calculator',
+            style: TextStyle(
+              color: Colors.amber,
+              fontSize: 25.0,
+              fontFamily: 'DoHyeon',
             ),
           ),
+          backgroundColor: Color(0xFF4c565e),
+          elevation: 0.0,
+          centerTitle: true,
+        ),
+        // extendBodyBehindAppBar: true,
+        body: Container(
+          decoration: BoxDecoration(
+            color: Color(0xFF4c565e),
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
+              numbersContainer,
+              SizedBox(height: 10.0),
               Container(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: EdgeInsets.only(right: 12.0),
-                  child: Text(
-                    history,
-                    style: GoogleFonts.rubik(
-                      textStyle: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.white54,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 5.0,
-                    right: 12.0,
-                    bottom: 12.0,
-                    left: 12.0,
-                  ),
-                  child: Text(
-                    textToDisplay,
-                    style: GoogleFonts.rubik(
-                      textStyle: TextStyle(
-                        fontSize: 48.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.black26,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(32.0),
-                  ),
-                ),
                 child: Column(
                   children: <Widget>[
                     calcItemRowOne,
@@ -326,7 +347,6 @@ class _CalculatorAppState extends State<CalculatorApp> {
                   ],
                 ),
               ),
-              // SizedBox(height: 3.0),
             ],
           ),
         ),
