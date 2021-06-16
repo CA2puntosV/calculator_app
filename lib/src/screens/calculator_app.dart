@@ -14,6 +14,9 @@ class CalculatorApp extends StatefulWidget {
 class _CalculatorAppState extends State<CalculatorApp> {
   String history = '';
   String textToDisplay = '';
+  String operation = '';
+  String btnVal = '';
+
   CalculatorBloc calculatorBloc = CalculatorBloc();
 
   @override
@@ -28,10 +31,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              calculatorBloc.allClear(
-                history: history,
-                textToDisplay: textToDisplay,
-              );
+              textToDisplay = calculatorBloc.btnOnClick('AC');
+              history = '';
             });
           },
         ),
@@ -42,7 +43,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              calculatorBloc.clear(textToDisplay);
+              textToDisplay = calculatorBloc.btnOnClick('C');
             });
           },
         ),
@@ -245,7 +246,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           width: 65 * 2.5,
           child: CalculatorButton(
             text: '=',
-            fillColor: 0xFF9b2bf0,
+            fillColor: 0xFF8e28dc,
             textColor: 0xFFf5e1fd,
             textSize: 22.0,
             callback: () {
@@ -260,8 +261,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
 
     final numbersContainer = Container(
       margin: EdgeInsets.only(
-        left: 15.0,
-        right: 15.0,
+        left: 10.0,
+        right: 10.0,
       ),
       height: 165.0,
       decoration: BoxDecoration(

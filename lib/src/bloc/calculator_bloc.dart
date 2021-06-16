@@ -3,56 +3,61 @@ class CalculatorBloc {
   int secondNum = 0;
   String history = '';
   String textToDisplay = '';
-  String res = '';
   String operation = '';
 
-  String btnOnClick(String btnVal) {
-    print(btnVal);
-    if (btnVal == '+' || btnVal == '-' || btnVal == 'X' || btnVal == '/') {
-      firstNum = int.parse(textToDisplay);
-      res = '0';
-      operation = btnVal;
-    } else if (btnVal == '=') {
-      secondNum = int.parse(textToDisplay);
-      if (operation == '+') {
-        res = (firstNum + secondNum).toString();
-        history =
-            firstNum.toString() + operation.toString() + secondNum.toString();
-      }
-      if (operation == '-') {
-        res = (firstNum - secondNum).toString();
-        history =
-            firstNum.toString() + operation.toString() + secondNum.toString();
-      }
-      if (operation == 'X') {
-        res = (firstNum * secondNum).toString();
-        history =
-            firstNum.toString() + operation.toString() + secondNum.toString();
-      }
-      if (operation == '/') {
-        res = (firstNum / secondNum).toString();
-        history =
-            firstNum.toString() + operation.toString() + secondNum.toString();
-      }
-    } else {
-      res = int.parse(textToDisplay + btnVal).toString();
+  String operate(int firstNumber, int secondNumber, String operation) {
+    String result;
+    switch (operation) {
+      case '+':
+        result = (firstNumber + secondNumber).toString();
+        break;
+      case '-':
+        result = (firstNumber - secondNumber).toString();
+        break;
+      case 'X':
+        result = (firstNumber * secondNumber).toString();
+        break;
+      case '/':
+        result = (firstNumber ~/ secondNumber).toString();
+        break;
+      default:
+        result = "Error D:";
     }
-
-    return res;
+    return result;
   }
 
-  void allClear({
-    required String history,
-    required String textToDisplay,
-  }) {
-    print('Everything was cleared');
-    history = '';
-    textToDisplay = '';
-  }
-
-  void clear(String text) {
-    print('Cleared last operation');
-    text = '';
+  String btnOnClick(String btnVal) {
+    if (btnVal == '+' || btnVal == '-' || btnVal == 'X' || btnVal == '/') {
+      operation = btnVal;
+      textToDisplay = textToDisplay + btnVal;
+    } else {
+      if (btnVal == '=') {
+        textToDisplay = operate(firstNum, secondNum, operation);
+        firstNum = 0;
+        secondNum = 0;
+        operation = '';
+      } else if (btnVal == 'AC') {
+        firstNum = 0;
+        secondNum = 0;
+        history = '';
+        textToDisplay = '';
+        operation = '';
+      } else if (btnVal == 'C') {
+        firstNum = 0;
+        secondNum = 0;
+        textToDisplay = '';
+        operation = '';
+      } else {
+        if (operation.isEmpty) {
+          firstNum = int.parse(btnVal);
+          textToDisplay = textToDisplay + firstNum.toString();
+        } else {
+          secondNum = int.parse(btnVal);
+          textToDisplay = textToDisplay + secondNum.toString();
+        }
+      }
+    }
+    return textToDisplay;
   }
 
   String eraser(String text) {
@@ -60,3 +65,17 @@ class CalculatorBloc {
     return text.substring(0, text.length - 1);
   }
 }
+
+// void allClear({
+//   required String history,
+//   required String textToDisplay,
+// }) {
+//   print('Everything was cleared');
+//   history = '';
+//   textToDisplay = '';
+// }
+
+// String clear(String text) {
+//   print('Cleared last operation');
+//   return text = 'na';
+// }

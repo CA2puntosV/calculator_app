@@ -40,7 +40,7 @@ class CalculatorButton extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            this.callback(text);
+            this.callback();
           },
         ),
       ),
