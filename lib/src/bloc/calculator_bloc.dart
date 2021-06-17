@@ -29,11 +29,11 @@ class CalculatorBloc {
   String btnOnClick(String btnVal) {
     if (btnVal == '+' || btnVal == '-' || btnVal == 'X' || btnVal == '/') {
       operation = btnVal;
-      textToDisplay = textToDisplay + btnVal;
+      textToDisplay = operation;
     } else {
       if (btnVal == '=') {
         textToDisplay = operate(firstNum, secondNum, operation);
-        firstNum = 0;
+        firstNum = int.parse(textToDisplay);
         secondNum = 0;
         operation = '';
       } else if (btnVal == 'AC') {
@@ -50,10 +50,10 @@ class CalculatorBloc {
       } else {
         if (operation.isEmpty) {
           firstNum = int.parse(btnVal);
-          textToDisplay = textToDisplay + firstNum.toString();
+          textToDisplay = firstNum.toString();
         } else {
-          secondNum = int.parse(btnVal);
-          textToDisplay = textToDisplay + secondNum.toString();
+          secondNum = secondNum + int.parse(btnVal);
+          textToDisplay = secondNum.toString();
         }
       }
     }

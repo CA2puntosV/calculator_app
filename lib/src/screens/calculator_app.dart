@@ -14,8 +14,7 @@ class CalculatorApp extends StatefulWidget {
 class _CalculatorAppState extends State<CalculatorApp> {
   String history = '';
   String textToDisplay = '';
-  String operation = '';
-  String btnVal = '';
+  bool equalWasPressed = true;
 
   CalculatorBloc calculatorBloc = CalculatorBloc();
 
@@ -64,7 +63,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('/');
+              textToDisplay += calculatorBloc.btnOnClick('/');
             });
           },
         ),
@@ -80,7 +79,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('9');
+              textToDisplay += calculatorBloc.btnOnClick('9');
             });
           },
         ),
@@ -91,7 +90,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('8');
+              textToDisplay = textToDisplay + calculatorBloc.btnOnClick('8');
             });
           },
         ),
@@ -102,7 +101,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('7');
+              textToDisplay += calculatorBloc.btnOnClick('7');
             });
           },
         ),
@@ -113,7 +112,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('X');
+              textToDisplay += calculatorBloc.btnOnClick('X');
             });
           },
         ),
@@ -129,7 +128,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('6');
+              textToDisplay += calculatorBloc.btnOnClick('6');
             });
           },
         ),
@@ -140,7 +139,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('5');
+              textToDisplay += calculatorBloc.btnOnClick('5');
             });
           },
         ),
@@ -151,7 +150,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('4');
+              textToDisplay += calculatorBloc.btnOnClick('4');
             });
           },
         ),
@@ -162,7 +161,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('-');
+              textToDisplay += calculatorBloc.btnOnClick('-');
             });
           },
         ),
@@ -178,7 +177,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('3');
+              textToDisplay += calculatorBloc.btnOnClick('3');
             });
           },
         ),
@@ -189,7 +188,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('2');
+              textToDisplay += calculatorBloc.btnOnClick('2');
             });
           },
         ),
@@ -200,7 +199,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('1');
+              textToDisplay += calculatorBloc.btnOnClick('1');
             });
           },
         ),
@@ -211,7 +210,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('+');
+              textToDisplay += calculatorBloc.btnOnClick('+');
             });
           },
         ),
@@ -227,7 +226,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('0');
+              textToDisplay += calculatorBloc.btnOnClick('0');
             });
           },
         ),
@@ -238,7 +237,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
           textSize: 22.0,
           callback: () {
             setState(() {
-              textToDisplay = calculatorBloc.btnOnClick('00');
+              textToDisplay += calculatorBloc.btnOnClick('00');
             });
           },
         ),
@@ -252,6 +251,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
             callback: () {
               setState(() {
                 textToDisplay = calculatorBloc.btnOnClick('=');
+                history = textToDisplay;
               });
             },
           ),
