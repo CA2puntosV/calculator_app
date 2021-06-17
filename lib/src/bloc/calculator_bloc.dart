@@ -30,31 +30,18 @@ class CalculatorBloc {
     if (btnVal == '+' || btnVal == '-' || btnVal == 'X' || btnVal == '/') {
       operation = btnVal;
       textToDisplay = operation;
+    } else if (btnVal == 'AC') {
+      firstNum = 0;
+      secondNum = 0;
+      textToDisplay = '';
+      operation = '';
     } else {
-      if (btnVal == '=') {
-        textToDisplay = operate(firstNum, secondNum, operation);
-        firstNum = int.parse(textToDisplay);
-        secondNum = 0;
-        operation = '';
-      } else if (btnVal == 'AC') {
-        firstNum = 0;
-        secondNum = 0;
-        history = '';
-        textToDisplay = '';
-        operation = '';
-      } else if (btnVal == 'C') {
-        firstNum = 0;
-        secondNum = 0;
-        textToDisplay = '';
-        operation = '';
+      if (operation.isEmpty) {
+        firstNum = int.parse(btnVal);
+        textToDisplay = firstNum.toString();
       } else {
-        if (operation.isEmpty) {
-          firstNum = int.parse(btnVal);
-          textToDisplay = firstNum.toString();
-        } else {
-          secondNum = secondNum + int.parse(btnVal);
-          textToDisplay = secondNum.toString();
-        }
+        secondNum = int.parse(btnVal);
+        textToDisplay = btnVal;
       }
     }
     return textToDisplay;
