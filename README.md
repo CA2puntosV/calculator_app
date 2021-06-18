@@ -1,3 +1,3 @@
 # Calculator App
 
-![Screenshot]{blob:https://web.whatsapp.com/3010bdbf-39de-4709-b6ef-ae4eb4f75e1e}
+![Calculator screenshot]{https://github.com/CA2puntosV/calculator_app/blob/main/images/calculator.jpeg?raw=true}
