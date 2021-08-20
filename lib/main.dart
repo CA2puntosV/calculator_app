@@ -1,6 +1,5 @@
-import 'package:calculator_app/src/app.dart';
 import 'package:flutter/material.dart';
+//Our imports
+import 'package:calculator_app/src/app.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());

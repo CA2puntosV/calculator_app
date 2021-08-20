@@ -1,8 +1,9 @@
-import 'package:calculator_app/src/widgets/calculator_button.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:calculator_app/src/adapters/calculator_adapter.dart';
 import 'package:flutter/material.dart';
+//Our imports
 import 'package:google_fonts/google_fonts.dart';
 import '../bloc/calculator_bloc.dart';
+import 'package:calculator_app/src/widgets/calculator_button.dart';
 
 class CalculatorApp extends StatefulWidget {
   CalculatorApp({Key? key}) : super(key: key);
@@ -12,409 +13,453 @@ class CalculatorApp extends StatefulWidget {
 }
 
 class _CalculatorAppState extends State<CalculatorApp> {
-  int firstNum = 0;
-  int secondNum = 0;
-  String history = '';
-  String textToDisplay = '';
-  String operation = '';
+  int _firstNum = 0;
+  int _secondNum = 0;
+  String _history = '';
+  String _textToDisplay = '';
+  String _operation = '';
 
-  final calculatorBloc = CalculatorBloc();
+  final _calculatorBloc = CalculatorBloc();
+
+  late CalculatorAdapter _calculatorAdapter;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculatorAdapter = CalculatorAdapter(
+      buildRow: _buildRow,
+      buildWideRow: _buildWideRow,
+      getTextToDisplay: () => _textToDisplay,
+      getHistory: () => _history,
+    );
+  }
 
   int _buildSecondOperand(String value) {
-    return int.parse(secondNum.toString() + value);
+    return int.parse(_secondNum.toString() + value);
+  }
+
+  void _assignOperation(String operator) {
+    setState(() {
+      _firstNum = int.parse(_textToDisplay);
+      _textToDisplay = _textToDisplay + _calculatorBloc.btnOnClick(operator);
+      _operation = operator;
+    });
+  }
+
+  void _assignNumber(String number) {
+    setState(() {
+      _textToDisplay = _textToDisplay + _calculatorBloc.btnOnClick(number);
+      if (_operation.isNotEmpty) _secondNum = _buildSecondOperand(number);
+      print(_textToDisplay);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget calcItemRowOne() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CalculatorButton(
-              text: 'AC',
-              fillColor: 0xFFfbb92b,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  firstNum = 0;
-                  secondNum = 0;
-                  history = '';
-                  textToDisplay = '';
-                  operation = '';
-                });
-              },
-            ),
-            CalculatorButton(
-              text: 'C',
-              fillColor: 0xFFfbb92b,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay = calculatorBloc.btnOnClick('C');
-                });
-              },
-            ),
-            CalculatorButton(
-                text: '<',
-                fillColor: 0xFF8e28dc,
-                textColor: 0xFFfef9ff,
-                textSize: 22.0,
-                callback: () {
-                  setState(() {
-                    textToDisplay = calculatorBloc.eraser(textToDisplay);
-                  });
-                }),
-            CalculatorButton(
-              text: '/',
-              fillColor: 0xFF8e28dc,
-              textColor: 0xFFfef9ff,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  firstNum = int.parse(textToDisplay);
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('/');
-                  operation = '/';
-                });
-              },
-            ),
-          ],
-        );
-    Widget calcItemRowTwo() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CalculatorButton(
-              text: '9',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('9');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('9');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '8',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('8');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('8');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '7',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('7');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('7');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: 'X',
-              fillColor: 0xFF8e28dc,
-              textColor: 0xFFfef9ff,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  firstNum = int.parse(textToDisplay);
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('X');
-                  operation = 'X';
-                });
-              },
-            ),
-          ],
-        );
-    Widget calcItemRowThree() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CalculatorButton(
-              text: '6',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('6');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('6');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '5',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('5');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('5');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '4',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('4');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('4');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '-',
-              fillColor: 0xFF8e28dc,
-              textColor: 0xFFfef9ff,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  firstNum = int.parse(textToDisplay);
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('-');
-                  operation = '-';
-                });
-              },
-            ),
-          ],
-        );
-    Widget calcItemRowFour() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CalculatorButton(
-              text: '3',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('3');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('3');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '2',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('2');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('2');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '1',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('1');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('1');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '+',
-              fillColor: 0xFF8e28dc,
-              textColor: 0xFFfef9ff,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  firstNum = int.parse(textToDisplay);
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('+');
-                  operation = '+';
-                });
-              },
-            ),
-          ],
-        );
-    Widget calcItemRowFive() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CalculatorButton(
-              text: '0',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('0');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('0');
-                });
-              },
-            ),
-            CalculatorButton(
-              text: '00',
-              fillColor: 0xFFfdff91,
-              textColor: 0xFF000000,
-              textSize: 22.0,
-              callback: () {
-                setState(() {
-                  textToDisplay =
-                      textToDisplay + calculatorBloc.btnOnClick('00');
-                  if (operation.isNotEmpty)
-                    secondNum = _buildSecondOperand('00');
-                });
-              },
-            ),
-            SizedBox(
-              width: 65 * 2.5,
-              child: CalculatorButton(
-                text: '=',
-                fillColor: 0xFF9b2bf0,
-                textColor: 0xFFf5e1fd,
-                textSize: 22.0,
-                callback: () {
-                  setState(
-                    () {
-                      textToDisplay = calculatorBloc.operate(
-                        firstNum,
-                        secondNum,
-                        operation,
-                      );
-                      firstNum = int.parse(textToDisplay);
-                      secondNum = 0;
-                      operation = '';
-                      history = textToDisplay;
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        );
+    return _calculatorAdapter.build(context);
+  }
 
-    Widget numbersContainer() => Container(
-          margin: EdgeInsets.only(
-            left: 15.0,
-            right: 15.0,
-          ),
-          height: 165.0,
-          decoration: BoxDecoration(
-            color: Colors.black38,
-            borderRadius: BorderRadius.all(Radius.circular(32.0)),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.only(right: 12.0),
-                  child: Text(
-                    history,
-                    style: GoogleFonts.rubik(
-                      textStyle: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.white54,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 5.0,
-                    right: 12.0,
-                    bottom: 12.0,
-                    left: 12.0,
-                  ),
-                  child: Text(
-                    textToDisplay,
-                    style: GoogleFonts.rubik(
-                      textStyle: TextStyle(
-                        fontSize: 48.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
+  Widget _buildRow(int index) {
+    String btn1 = '', btn2 = '', btn3 = '', btn4 = '';
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Calculator',
-            style: TextStyle(
-              color: Colors.amber,
-              fontSize: 25.0,
-              fontFamily: 'DoHyeon',
+    int? color1, color2, color3, color4;
+    int? textColor;
+
+    VoidCallback function1 = () {},
+        function2 = () {},
+        function3 = () {},
+        function4 = () {};
+
+    Map<String, int> colors = {
+      'mainColor': 0xFFfdff91, //accent
+      'mainTextColor': 0xFF000000, //black
+      'secondaryTextColor': 0xFFffffff, //white
+      'functionsColor': 0xFFfbb92b, //yellow
+      'operatorsColor': 0xFF8e28dc, //purple
+    };
+
+    if (index == 0) {
+      //ASIGNACIÓN DE VALORES (ROW 1)
+      btn1 = 'AC';
+      btn2 = 'C';
+      btn3 = '<';
+      btn4 = '/';
+      //ASIGNACIÓN DE COLORES (ROW 1)
+      color1 = colors['functionsColor'];
+      color2 = colors['functionsColor'];
+      color3 = colors['operatorsColor'];
+      color4 = colors['operatorsColor'];
+      textColor = colors['secondaryTextColor'];
+      //ASIGNACIÓN DE FUNCIONES
+      function1 = () {
+        setState(() {
+          _firstNum = 0;
+          _secondNum = 0;
+          _history = '';
+          _textToDisplay = '';
+          _operation = '';
+          print('All was cleared');
+        });
+      };
+      function2 = () {
+        setState(() {
+          _firstNum = 0;
+          _secondNum = 0;
+          _textToDisplay = '';
+          _operation = '';
+          print('Last operation was cleared');
+        });
+      };
+      function3 = () {
+        setState(() {
+          _textToDisplay = _calculatorBloc.eraser(_textToDisplay);
+          print('Cleared last character');
+        });
+      };
+      function4 = () {
+        _assignOperation('/');
+      };
+    } else if (index == 1) {
+      //ASIGNACIÓN DE VALORES (ROW 2)
+      btn1 = '9';
+      btn2 = '8';
+      btn3 = '7';
+      btn4 = 'X';
+      //ASIGNACIÓN DE COLORES (ROW 2)
+      color1 = colors['mainColor'];
+      color2 = colors['mainColor'];
+      color3 = colors['mainColor'];
+      color4 = colors['operatorsColor'];
+      //ASIGNACIÓN DE FUNCIONES (ROW 2)
+      function1 = () {
+        _assignNumber('9');
+      };
+      function2 = () {
+        _assignNumber('8');
+      };
+      function3 = () {
+        _assignNumber('7');
+      };
+      function4 = () {
+        _assignOperation('X');
+      };
+    } else if (index == 2) {
+      btn1 = '6';
+      btn2 = '5';
+      btn3 = '4';
+      btn4 = '-';
+      //ASIGNACIÓN DE COLORES (ROW 3)
+      color1 = colors['mainColor'];
+      color2 = colors['mainColor'];
+      color3 = colors['mainColor'];
+      color4 = colors['operatorsColor'];
+      //ASIGNACIÓN DE FUNCIONES (ROW 3)
+      function1 = () {
+        _assignNumber('6');
+      };
+      function2 = () {
+        _assignNumber('5');
+      };
+      function3 = () {
+        _assignNumber('4');
+      };
+      function4 = () {
+        _assignOperation('-');
+      };
+    } else if (index == 3) {
+      btn1 = '3';
+      btn2 = '2';
+      btn3 = '1';
+      btn4 = '+';
+      //ASIGNACIÓN DE COLORES (ROW 4)
+      color1 = colors['mainColor'];
+      color2 = colors['mainColor'];
+      color3 = colors['mainColor'];
+      color4 = colors['operatorsColor'];
+      //ASIGNACIÓN DE FUNCIONES (ROW 4)
+      function1 = () {
+        _assignNumber('3');
+      };
+      function2 = () {
+        _assignNumber('2');
+      };
+      function3 = () {
+        _assignNumber('1');
+      };
+      function4 = () {
+        _assignOperation('+');
+      };
+    } else if (index == 4) {
+      //ASIGNACIÓN DE VALORES
+      btn1 = '0';
+      btn2 = '00';
+      btn3 = '=';
+      //ASIGNACIÓN DE COLORES (ROW 5)
+      color1 = colors['mainColor'];
+      color2 = colors['mainColor'];
+      color3 = colors['mainColor'];
+      color4 = colors['operatorsColor'];
+      //ASIGNACIÓN DE FUNCIONES (ROW 5)
+      function1 = () {
+        _assignNumber('0');
+      };
+      function2 = () {
+        _assignNumber('00');
+      };
+      function3 = () {
+        setState(() {
+          _textToDisplay = _calculatorBloc.operate(
+            _firstNum,
+            _secondNum,
+            _operation,
+          );
+          _firstNum = int.parse(_textToDisplay);
+          _secondNum = 0;
+          _operation = '';
+          _history = _textToDisplay;
+          print(_textToDisplay);
+        });
+      };
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        CalculatorButton(
+          text: btn1,
+          fillColor: color1,
+          callback: function1,
+        ),
+        CalculatorButton(
+          text: btn2,
+          fillColor: color2,
+          callback: function2,
+        ),
+        if (btn3 == '=')
+          SizedBox(
+            width: 65 * 2.5,
+            child: CalculatorButton(
+              text: btn3,
+              fillColor: color4,
+              callback: function3,
+              textColor: colors['secondaryTextColor'],
             ),
+          )
+        else
+          CalculatorButton(
+            text: btn3,
+            fillColor: color3,
+            callback: function3,
+            textColor: textColor,
           ),
-          backgroundColor: Color(0xFF4c565e),
-          elevation: 0.0,
-          centerTitle: true,
-        ),
-        // extendBodyBehindAppBar: true,
-        body: Container(
-          decoration: BoxDecoration(
-            color: Color(0xFF4c565e),
+        if (btn3 != '=')
+          CalculatorButton(
+            text: btn4,
+            fillColor: color4,
+            textColor: colors['secondaryTextColor'],
+            callback: function4,
           ),
-          child: Column(
-            children: <Widget>[
-              numbersContainer(),
-              SizedBox(height: 10.0),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    calcItemRowOne(),
-                    calcItemRowTwo(),
-                    calcItemRowThree(),
-                    calcItemRowFour(),
-                    calcItemRowFive(),
-                  ],
-                ),
+      ],
+    );
+  }
+
+  Widget _buildWideRow(int index) {
+    String btn1 = '', btn2 = '', btn3 = '', btn4 = '', btn5 = '';
+    double buttonHeigth = 50.0;
+
+    int? color1, color2, color3, color4;
+    int? textColor;
+
+    VoidCallback function1 = () {},
+        function2 = () {},
+        function3 = () {},
+        function4 = () {},
+        function5 = () {};
+
+    Map<String, int> colors = {
+      'mainColor': 0xFFfdff91, //accent
+      'mainTextColor': 0xFF000000, //black
+      'secondaryTextColor': 0xFFffffff, //white
+      'functionsColor': 0xFFfbb92b, //yellow
+      'operatorsColor': 0xFF8e28dc, //purple
+    };
+
+    if (index == 0) {
+      //ASIGNACIÓN DE VALORES (ROW 1)
+      btn2 = 'AC';
+      btn3 = 'C';
+      btn4 = '<';
+      btn5 = '/';
+      //ASIGNACIÓN DE COLORES (ROW 1)
+      color1 = colors['functionsColor'];
+      color2 = colors['functionsColor'];
+      color3 = colors['operatorsColor'];
+      color4 = colors['operatorsColor'];
+      textColor = colors['secondaryTextColor'];
+      //ASIGNACIÓN DE FUNCIONES
+      function2 = () {
+        setState(() {
+          _firstNum = 0;
+          _secondNum = 0;
+          _history = '';
+          _textToDisplay = '';
+          _operation = '';
+          print('All was cleared');
+        });
+      };
+      function3 = () {
+        setState(() {
+          _firstNum = 0;
+          _secondNum = 0;
+          _textToDisplay = '';
+          _operation = '';
+          print('Last operation was cleared');
+        });
+      };
+      function4 = () {
+        setState(() {
+          _textToDisplay = _calculatorBloc.eraser(_textToDisplay);
+          print('Cleared last character');
+        });
+      };
+      function5 = () {
+        _assignOperation('/');
+      };
+    } else if (index == 1) {
+      //ASIGNACIÓN DE VALORES (ROW 2)
+      btn1 = '9';
+      btn2 = '8';
+      btn3 = '7';
+      btn4 = '6';
+      btn5 = 'X';
+      //ASIGNACIÓN DE COLORES (ROW 2)
+      color1 = colors['mainColor'];
+      color2 = colors['mainColor'];
+      color3 = colors['mainColor'];
+      color4 = colors['operatorsColor'];
+      //ASIGNACIÓN DE FUNCIONES (ROW 2)
+      function1 = () {
+        _assignNumber('9');
+      };
+      function2 = () {
+        _assignNumber('8');
+      };
+      function3 = () {
+        _assignNumber('7');
+      };
+      function4 = () {
+        _assignNumber('6');
+      };
+      function5 = () {
+        _assignOperation('X');
+      };
+    } else if (index == 2) {
+      btn1 = '5';
+      btn2 = '4';
+      btn3 = '3';
+      btn4 = '2';
+      btn5 = '-';
+      //ASIGNACIÓN DE COLORES (ROW 3)
+      color1 = colors['mainColor'];
+      color2 = colors['mainColor'];
+      color3 = colors['mainColor'];
+      color4 = colors['operatorsColor'];
+      //ASIGNACIÓN DE FUNCIONES (ROW 3)
+      function1 = () {
+        _assignNumber('5');
+      };
+      function2 = () {
+        _assignNumber('4');
+      };
+      function3 = () {
+        _assignNumber('3');
+      };
+      function4 = () {
+        _assignNumber('2');
+      };
+      function5 = () {
+        _assignOperation('-');
+      };
+    } else if (index == 3) {
+      btn1 = '1';
+      btn2 = '0';
+      btn3 = '00';
+      btn4 = '=';
+      btn5 = '+';
+      //ASIGNACIÓN DE COLORES (ROW 4)
+      color1 = colors['mainColor'];
+      color2 = colors['mainColor'];
+      color3 = colors['mainColor'];
+      color4 = colors['operatorsColor'];
+      //ASIGNACIÓN DE FUNCIONES (ROW 4)
+      function1 = () {
+        _assignNumber('1');
+      };
+      function2 = () {
+        _assignNumber('0');
+      };
+      function3 = () {
+        _assignNumber('00');
+      };
+      function4 = () {
+        setState(() {
+          _textToDisplay = _calculatorBloc.operate(
+            _firstNum,
+            _secondNum,
+            _operation,
+          );
+          _firstNum = int.parse(_textToDisplay);
+          _secondNum = 0;
+          _operation = '';
+          _history = _textToDisplay;
+          print(_textToDisplay);
+        });
+      };
+      function5 = () {
+        _assignOperation('+');
+      };
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        index == 0
+            ? SizedBox(
+                width: 80.0,
+              )
+            : CalculatorButton(
+                text: btn1,
+                fillColor: color1,
+                callback: function1,
+                buttonHeight: buttonHeigth,
               ),
-            ],
-          ),
+        CalculatorButton(
+          text: btn2,
+          fillColor: color1,
+          callback: function2,
+          buttonHeight: buttonHeigth,
         ),
-      ),
+        CalculatorButton(
+          text: btn3,
+          fillColor: color2,
+          callback: function3,
+          buttonHeight: buttonHeigth,
+        ),
+        CalculatorButton(
+          text: btn4,
+          fillColor: btn4 == '<' || btn4 == '=' ? color4 : color1,
+          callback: function4,
+          buttonHeight: buttonHeigth,
+          textColor: btn4 == '=' ? colors['secondaryTextColor'] : textColor,
+        ),
+        CalculatorButton(
+          text: btn5,
+          fillColor: color4,
+          callback: function5,
+          textColor: colors['secondaryTextColor'],
+          buttonHeight: buttonHeigth,
+        ),
+      ],
     );
   }
 }

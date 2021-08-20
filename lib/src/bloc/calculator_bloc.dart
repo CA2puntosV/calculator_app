@@ -35,6 +35,11 @@ class CalculatorBloc {
       secondNum = 0;
       textToDisplay = '';
       operation = '';
+    } else if (btnVal == 'C') {
+      firstNum = 0;
+      secondNum = 0;
+      textToDisplay = '';
+      operation = '';
     } else {
       if (operation.isEmpty) {
         firstNum = int.parse(btnVal);
@@ -48,21 +53,6 @@ class CalculatorBloc {
   }
 
   String eraser(String text) {
-    print('Cleared last number');
     return text.substring(0, text.length - 1);
   }
 }
-
-// void allClear({
-//   required String history,
-//   required String textToDisplay,
-// }) {
-//   print('Everything was cleared');
-//   history = '';
-//   textToDisplay = '';
-// }
-
-// String clear(String text) {
-//   print('Cleared last operation');
-//   return text = 'na';
-// }

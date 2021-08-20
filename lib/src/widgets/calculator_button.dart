@@ -6,23 +6,30 @@ class CalculatorButton extends StatelessWidget {
   final int? fillColor;
   final int? textColor;
   final double? textSize;
-  final Function callback;
+  final double? buttonHeight;
+  final VoidCallback callback;
 
   CalculatorButton({
     required this.text,
     this.fillColor,
     this.textColor,
     this.textSize,
+    this.buttonHeight,
     required this.callback,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(5.0),
+      margin: const EdgeInsets.only(
+        top: 8.0,
+        left: 5.0,
+        bottom: 5.0,
+        right: 5.0,
+      ),
       child: SizedBox(
-        width: 65,
-        height: 55,
+        width: 75,
+        height: buttonHeight ?? 75,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: Color(fillColor!),
@@ -35,13 +42,11 @@ class CalculatorButton extends StatelessWidget {
           child: Text(
             text,
             style: GoogleFonts.rubik(
-              fontSize: textSize,
-              color: Color(textColor!),
+              fontSize: textSize ?? 22.0,
+              color: Color(textColor ?? 0xFF000000),
             ),
           ),
-          onPressed: () {
-            this.callback();
-          },
+          onPressed: this.callback,
         ),
       ),
     );
